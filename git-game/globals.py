@@ -3,7 +3,7 @@ import random
 import pygame
 import pygame_gui
 pygame.init()
-
+import time
 
 # Game
 SCREEN_WIDTH = 960

@@ -7,11 +7,12 @@ from story_ui import StoryUI
 from combat_ui import CombatUI
 
 class UIController:
-    def __init__(self):
+    def __init__(self, main_character):
         pygame.init()
         self.__running = True
         self.__current_screen = "login"
-
+        self.main_character = main_character
+        
     def run(self):
         while self.__running:
             # Depending on the current screen, show the relevant UI class
@@ -20,7 +21,7 @@ class UIController:
             elif self.__current_screen == "menu":
                 current_ui = MenuUI()
             elif self.__current_screen == "combat":
-                current_ui = CombatUI()
+                current_ui = CombatUI(self.main_character)
             elif self.__current_screen == "story":
                 current_ui = StoryUI()
             else:

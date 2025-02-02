@@ -2,13 +2,15 @@ import pygame
 import pygame_gui
 from globals import *
 pygame.init()
+from message_display import MessageDisplay
 
 class StoryUI:
     def __init__(self):
         self.__screen = SCREEN
         self.__manager = UI_MANAGER  # GUI Manager initialisation
         self.__clock = CLOCK
-
+        self._message_display = MessageDisplay()
+        
         self.__dialogue = [
             "Hello.",
             "This is an example of visual novel dialogue.",
@@ -23,7 +25,6 @@ class StoryUI:
             manager=self.__manager,
             object_id="#dialoguebox"  # For theming in the future
         )
-        
         
     def run(self):
         running = True
