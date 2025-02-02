@@ -29,7 +29,7 @@ class Entity(ABC):
     def set_max_hp(self, value):
         if value < 0:
             value = 0
-        self.__max_hp += value
+        self.__max_hp = value
 
     def get_max_hp(self):
         return self.__max_hp
@@ -37,7 +37,7 @@ class Entity(ABC):
     def set_attack(self, value):
         if value < 0:
             value = 0
-        self.__attack += value
+        self.__attack = value
 
     def get_attack(self):
         return self.__attack
@@ -51,7 +51,7 @@ class Entity(ABC):
     def set_shield(self, value):
         if value < 0:
             value = 0
-        self.__shield += value
+        self.__shield = value
 
     def get_shield(self):
         return self.__shield
@@ -71,7 +71,7 @@ class Entity(ABC):
     
     # Abstract methods
     @abstractmethod
-    def deal_damage(self, target):
+    def deal_damage(self):
         pass
     
     @abstractmethod
@@ -92,13 +92,14 @@ class Entity(ABC):
         self.set_shield(self.get_shield() - shield_damage)
         self._message_display.show_message(f"{self.name} shielded {shield_damage} damage!")
         
-        if hp_damage > 0:
+        if hp_damage > 0: # If hp damage is leftover, apply it to character
             self.set_hp(self.get_hp() - hp_damage)
             if self.get_hp() <= 0:
                 self._message_display.show_message(f"{self.name} was defeated!")
             else:
                 self._message_display.show_message(f"{self.name} took {hp_damage} damage!")
         else:
+            # If no hp damage was taken, the attack was blocked.
             self._message_display.show_message(f"{self.name} fully blocked the attack!")
 
     
