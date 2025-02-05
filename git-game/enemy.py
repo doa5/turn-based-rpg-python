@@ -110,7 +110,7 @@ class Enemy(Entity):
                 # Target a healer character
                 support_target = None
                 for character in player_party:
-                    if character.healer:
+                    if character.get_healer():
                         support_target = character
                         break
                 if support_target:
@@ -154,3 +154,8 @@ class Enemy(Entity):
             hp_damage = self.get_attack() - target.get_shield()  # Remaining damage goes to HP
             
         target.apply_damage(shield_damage, hp_damage)
+
+    def heal(self):
+        heal_amount = int(self.get_hp() * 0.5)
+        self.set_hp(self.get_hp() + heal_amount)
+        print(f"{self.name} healed themselves for {heal_amount} HP!")

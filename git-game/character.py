@@ -5,12 +5,11 @@ class Character(Entity):
     # Class variable 
     crit_multiplier = 2
 
-    def __init__(self, name: str, hp: int = 10, max_hp: int = 20, attack: int = 5, shield: int = 0, agility: int = 5, evasion: int = 5, guarded: bool = False, healer: bool = False, level: int = 1, xp:int = 0, crit_rate: int = 10, player_party: list = []):
+    def __init__(self, name: str, hp: int = 10, max_hp: int = 20, attack: int = 5, shield: int = 0, agility: int = 5, evasion: int = 5, guarded: bool = False, healer: bool = False, level: int = 1, xp:int = 0, crit_rate: int = 10):
         super().__init__(name, hp, max_hp, attack, shield, agility, evasion, guarded, healer)
         self.__level = level
         self.__xp = xp
         self.__crit_rate = crit_rate
-        self.player_party = player_party
         
     # Getters and setters
     def get_level(self):
@@ -82,7 +81,7 @@ class Character(Entity):
         else:
             print("Error: Invalid action")
     
-    def party_decide_action(self, enemies, retry_count=0):
+    def party_decide_action(self, enemies, player_party, retry_count=0):
         # Recursive decision-making function for a party member to decide an action. It returns a tuple (chosen_action, chosen_target)
 
         # Stopping case, if retry limit is reached, pick a random enemy
@@ -93,7 +92,7 @@ class Character(Entity):
 
         # If this character is a healer, check if any party member has low HP and heal them.
         if self.__healer:
-            for character in self.player_party:
+            for character in player_party:
                 if character.get_hp() <= (character.get_max_hp() * 0.3):
                     chosen_action = "heal" # Heal character
                     chosen_target = character
@@ -194,14 +193,6 @@ class Character(Entity):
         # Fallback return (should not be reached).
         return None, None
 
-    def perform_guard(self): # Placeholder
-        # Placeholder implementation for guarding.
-        print(f"{self.name} is guarding!")
-
-    def heal(self, target): # Placeholder
-        # Placeholder implementation for healing.
-        print(f"{self.name} heals {target.name}!")
-
     def deal_damage(self, target):
         if self.get_attack() < target.get_shield():
             shield_damage = self.get_attack() - target.get_shield()  # All damage absorbed by shield
@@ -217,14 +208,18 @@ class Character(Entity):
 
         target.apply_damage(shield_damage, hp_damage)
 
+    def heal(self, healed, player_party):
+        if healed in player_party:
+            heal_amount = int(healed.get_hp() * 0.5)
+            healed.set_hp(healed.get_hp() + heal_amount)
+            print(f"{self.name} healed {healed.name} for {heal_amount} HP!")
+        else:
+            print(f"ERROR: {healed.name} is not an ally. Healing failed.")
 
 if __name__ == "__main__":
-    player_party = []
-    char1 = Character("TestChar", player_party, xp=100) 
+    char1 = Character("Hero", crit_rate=100)
+    crit_test_result = char1.__critical_hit_test() # Should be successful
+    print(crit_test_result)
 
-    print(f"Before Level Up: Level={char1.get_level()}, XP={char1.get_xp()}, Attack={char1.get_attack()}, Max HP={char1.get_max_hp()}")
 
-    char1.check_level_up()  # This should trigger a level-up
-
-    print(f"After Level Up: Level={char1.get_level()}, XP={char1.get_xp()}, Attack={char1.get_attack()}, Max HP={char1.get_max_hp()}")
-
+    
