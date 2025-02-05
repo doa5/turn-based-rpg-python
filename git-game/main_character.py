@@ -68,19 +68,20 @@ class MainCharacter(Character):
     def execute_action(self, chosen_action, chosen_target, chosen_item=None):
         if chosen_action == "attack":
             #self.deal_damage(chosen_target) removed during testing
-            #print(f"{self.name} attacks {chosen_target.name}")
-            print(f"{self.name} attacks {chosen_target.name}")
+            print(f"{self.name} attacks {chosen_target.name}") 
         elif chosen_action == "guard":
-            #self.perform_guard() removed during testing
             print(f"{self.name} guards")
         elif chosen_action == "spell":
             if self.get_summon():
-                # self.cast_spell(chosen_target)  Future implementation
-                print(f"{self.name} spell")
+                # self.cast_spell(chosen_target) - future implementation
+                print(f"{self.name} uses a spell on {chosen_target.name}")
             else:
                 print(f"{self.name} cannot cast spell (spell not unlocked).")
         elif chosen_action == "item":
-            print(f"{self.name} uses item") # *Implement item handling after database
+            # *Implement item handling after database
+            print(f"{self.name} uses item") 
+        else:
+            print("Error: Invalid action")
 
     def unlock_summon(self):
         self.__summon = True
@@ -100,7 +101,19 @@ class MainCharacter(Character):
 
 
 if __name__ == "__main__":
-    hero = MainCharacter(name="Hero", attack=10, max_hp=50)
-    print(f"Before training: Attack = {hero.get_attack()}, Max HP = {hero.get_max_hp()}")
-    hero.training()
-    print(f"After training: Attack = {hero.get_attack()}, Max HP = {hero.get_max_hp()}")
+    hero = MainCharacter(name="Hero", attack=10, max_hp=50, summon=None)
+    target = MainCharacter(name="Enemy", attack=8, max_hp=30)
+    print("Simulating action (attack):")
+    hero.execute_action("attack", target)
+    print("Simulating action (guard):")
+    hero.execute_action("guard", None)  
+    print("Simulating action (spell) - spell not unlocked:")
+    hero.execute_action("spell", target) 
+    hero.unlock_summon()  
+    print("Simulating action (spell) - spell unlocked:")
+    hero.execute_action("spell", target) 
+    print("Simulating action (item):")
+    hero.execute_action("item", None)  
+    print("Simulating action (invalid action):")
+    hero.execute_action("invalid_action", None) 
+

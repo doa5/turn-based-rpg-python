@@ -26,7 +26,9 @@ class Enemy(Entity):
         self.execute_action(chosen_action, chosen_target)
         time.sleep(1)
 
-    def enemy_decide_action(self, player_party, retry_count=0):
+    def enemy_decide_action(self, player_party, forced_attack_type=None, retry_count=0):
+        # Can pass a value as parameter for testing 
+        enemy_ai_attack_type = forced_attack_type if forced_attack_type else random.randint(1, 5)
         # Recursive enemy AI decision making function
     
         # Stopping case, if retry limit is reached, pick a random target
@@ -37,7 +39,7 @@ class Enemy(Entity):
 
         # Determine action based on enemy health
         if self.get_hp() <= (self.get_max_hp() * 0.3):
-            if self.healer:
+            if self.get_healer():
                 chosen_action = "heal"
                 chosen_target = self  # Heals itself
                 print(f"Enemy {self.name} chooses to heal itself due to low HP.")
@@ -55,7 +57,6 @@ class Enemy(Entity):
             return chosen_action, chosen_target
 
         # Enemy AI has 5 attacking paths.
-        enemy_ai_attack_type = random.randint(1, 5)
         match enemy_ai_attack_type:
             case 1:
                 # Avoid damaging a character with high evasion.
@@ -110,13 +111,14 @@ class Enemy(Entity):
                 # Target a healer character
                 support_target = None
                 for character in player_party:
-                    if character.healer:
+                    if character.get_healer():
                         support_target = character
                         break
                 if support_target:
                     chosen_target = support_target
                     chosen_action = "attack"
                     print(f"Enemy {self.name} chooses to attack the healer, {chosen_target.name}.")
+                    return chosen_action, chosen_target
                 else:
                     return self.enemy_decide_action(player_party, retry_count + 1)
 
@@ -154,3 +156,8 @@ class Enemy(Entity):
             hp_damage = self.get_attack() - target.get_shield()  # Remaining damage goes to HP
             
         target.apply_damage(shield_damage, hp_damage)
+
+    def heal(self):
+        heal_amount = int(self.get_hp() * 0.5)
+        self.set_hp(self.get_hp() + heal_amount)
+        print(f"{self.name} healed themselves for {heal_amount} HP!")

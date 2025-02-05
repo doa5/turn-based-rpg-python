@@ -18,7 +18,7 @@ class MessageDisplay:
     def update(self):
         if self.__message:
             elapsed_time = time.time() - self.__start_time
-            if elapsed_time < 3:
+            if elapsed_time < 2:
                 text_surface = self.__font.render(self.__message, True, self.__colour)
                 text_rect = text_surface.get_rect()
 

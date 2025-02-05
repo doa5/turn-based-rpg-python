@@ -18,10 +18,11 @@ class Entity(ABC):
     # Getters and setters
     def set_hp(self, value):
         if value < 0:
-            if self.get_hp() + value < self.get_max_hp():
-                self.__hp = value
-            else:
-                self.__hp = self.get_max_hp()
+            value = 0
+        elif value > self.get_max_hp():
+            self.__hp = self.get_max_hp()
+        else:
+            self.__hp = value
 
     def get_hp(self):
         return self.__hp
@@ -82,7 +83,12 @@ class Entity(ABC):
     def execute_action(self):
         pass
 
+    @abstractmethod
+    def heal(self):
+        pass
+
     # Methods
+
     def evade_chance(self):
         random_value = random.randint(1, 100) 
         # Returns true if entity's evasion is higher than the random value, meaning they dodged successfully
@@ -102,5 +108,8 @@ class Entity(ABC):
             # If no hp damage was taken, the attack was blocked.
             self._message_display.show_message(f"{self.name} fully blocked the attack!")
 
-    
-
+    def perform_guard(self):
+        shield_increase = int(self.get_max_hp() * 0.3)
+        self.set_shield(self.get_shield() + shield_increase)
+        self.set_guarded(True)
+        print(f"{self.name} guards, increasing shield by {shield_increase}.")
