@@ -6,6 +6,7 @@ While the project was designed to meet the exam spec, I used it as a chance to p
 ---
 
 ## What I Learned (¬‿¬)
+
 - How to apply OOP concepts in a real project (e.g. `Player`, `Enemy`, `BattleSystem`)
 - Designing a modular architecture that separates logic into different files
 - Handling user input, game state, and basic AI behaviour
@@ -14,6 +15,7 @@ While the project was designed to meet the exam spec, I used it as a chance to p
 ---
 
 ## Tech Used (ง •̀_•́)ง
+
 - Python 3
 - Object-Oriented Programming
 - Console I/O
@@ -21,4 +23,5 @@ While the project was designed to meet the exam spec, I used it as a chance to p
 ---
 
 ## Status (︶︹︶)
+
 This project is archived and won’t be updated, but I still keep it up as a milestone. My future projects focus more on cybersecurity and scripting — see my [GitHub profile](https://github.com/Odiri7) for current work. ✨
