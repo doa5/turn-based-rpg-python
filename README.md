@@ -1,7 +1,7 @@
 # Hidden Potential — Turn-Based RPG (Archived)
 
 This was my first full Python project, built for the A-Level OCR Computer Science NEA coursework. It’s a basic Pygame turn-based RPG made with Object-Oriented Programming (OOP).
-While the project was designed to meet the exam spec, I used it as a chance to practise modular code, battle logic, and structuring a full program from scratch. (￣▽￣)ノ
+While the project was designed to meet the exam spec, I used it as a chance to practise modular code and structuring a full program from scratch. (￣▽￣)ノ
 
 ---
 
