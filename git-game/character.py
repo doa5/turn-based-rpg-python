@@ -81,7 +81,9 @@ class Character(Entity):
         else:
             print("Error: Invalid action")
     
-    def party_decide_action(self, enemies, player_party, retry_count=0):
+    def party_decide_action(self, enemies, player_party, forced_attack_type=None, retry_count=0):
+        # Can pass a value as parameter for testing 
+        player_ai_attack_type = forced_attack_type if forced_attack_type else random.randint(1, 5)
         # Recursive decision-making function for a party member to decide an action. It returns a tuple (chosen_action, chosen_target)
 
         # Stopping case, if retry limit is reached, pick a random enemy
@@ -91,9 +93,9 @@ class Character(Entity):
             return chosen_action, chosen_target
 
         # If this character is a healer, check if any party member has low HP and heal them.
-        if self.__healer:
+        if self.get_healer():
             for character in player_party:
-                if character.get_hp() <= (character.get_max_hp() * 0.3):
+                if character.get_hp() <= int(character.get_max_hp() * 0.3):
                     chosen_action = "heal" # Heal character
                     chosen_target = character
                     print(f"Character {self.name} chooses to heal {chosen_target.name} because they have low HP.")
@@ -112,8 +114,7 @@ class Character(Entity):
             chosen_target = enemies[0]
             return chosen_action, chosen_target
 
-        # Player AI decision paths, randomly choose a decision branch.
-        player_ai_attack_type = random.randint(1, 5)
+        # Player AI 5 decision paths
         match player_ai_attack_type:
             case 1:
                 # Avoid attacking the enemy with the highest evasion.
@@ -167,7 +168,7 @@ class Character(Entity):
                 # Attack an enemy healer if one exists.
                 support_target = None
                 for enemy in enemies:
-                    if enemy.healer:
+                    if enemy.get_healer():
                         support_target = enemy
                         break
                 if support_target:
